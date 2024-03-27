@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Form</title>
+    <style>
+      .form-group {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="dynamicForm">
+      <div class="form-group">
+        <label for="articleTitle">Article Title:</label>
+        <input type="text" id="articleTitle" name="articleTitle" />
+      </div>
+      <div class="form-group">
+        <label for="articleContent">Article Content:</label>
+        <textarea id="articleContent" name="articleContent"></textarea>
+      </div>
+      <div id="dynamicFields">
+        <!-- Dynamic fields will be added here -->
+      </div>
+      <button type="button" onclick="addTextField()">Add Text Field</button>
+      <button type="button" onclick="addImageField()">Add Image Field</button>
+      <button type="submit">Submit</button>
+    </form>
+
+    <script>
+      let dynamicFieldsCounter = 0;
+
+      function addTextField() {
+        dynamicFieldsCounter++;
+        const dynamicFieldsDiv = document.getElementById("dynamicFields");
+        const textField = document.createElement("div");
+        textField.classList.add("form-group");
+        textField.innerHTML = `
+            <label for="textField${dynamicFieldsCounter}">Text Field ${dynamicFieldsCounter}:</label>
+            <input type="text" id="textField${dynamicFieldsCounter}" name="textField${dynamicFieldsCounter}">
+        `;
+        dynamicFieldsDiv.appendChild(textField);
+      }
+
+      function addImageField() {
+        dynamicFieldsCounter++;
+        const dynamicFieldsDiv = document.getElementById("dynamicFields");
+        const imageField = document.createElement("div");
+        imageField.classList.add("form-group");
+        imageField.innerHTML = `
+            <label for="imageField${dynamicFieldsCounter}">Image Field ${dynamicFieldsCounter}:</label>
+            <input type="file" id="imageField${dynamicFieldsCounter}" name="imageField${dynamicFieldsCounter}">
+        `;
+        dynamicFieldsDiv.appendChild(imageField);
+      }
+
+      document
+        .getElementById("dynamicForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const formValues = {};
+          const formInputs = document.querySelectorAll("input, textarea");
+          formInputs.forEach((input) => {
+            formValues[input.name] = input.value;
+          });
+          // Add additional fields to the formValues object
+          for (let i = 1; i <= dynamicFieldsCounter; i++) {
+            const fieldInput =
+              document.getElementById(textField${i}) ||
+              document.getElementById(imageField${i});
+            formValues[field${i}] = fieldInput.value;
+          }
+          console.log(formValues);
+          // Here you can do whatever you want with the formValues object, like sending it to a server or processing it further.
+        });
+    </script>
+  </body>
+</html>
